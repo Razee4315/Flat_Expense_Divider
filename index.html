@@ -6,239 +6,91 @@
     <title>Flatmate Expense Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #3b82f6;
-            --secondary: #10b981;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --darker: #0f172a;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            min-height: 100vh;
-            color: #f8fafc;
-        }
-        
-        .card {
-            background-color: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .input-field {
-            background-color: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .input-field:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-secondary {
-            background-color: var(--secondary);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-danger {
-            background-color: var(--danger);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-danger:hover {
-            background-color: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .table-row:hover {
-            background-color: rgba(51, 65, 85, 0.5);
-        }
-        
-        .summary-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.75rem 0;
-        }
-        
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-        
-        .glow {
-            animation: glow 1.5s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
-            }
-            to {
-                box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
-            }
-        }
-        
-        /* Custom radio buttons */
-        .radio-option {
-            display: none;
-        }
-        
-        .radio-label {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            background-color: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .radio-option:checked + .radio-label {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-        
-        /* Custom checkboxes */
-        .checkbox-option {
-            display: none;
-        }
-        
-        .checkbox-label {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            background-color: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .checkbox-option:checked + .checkbox-label {
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-            color: white;
-        }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: var(--dark);
-            border-radius: 0.5rem;
-            width: 90%;
-            max-width: 500px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
-            .form-container {
-                flex-direction: column;
-            }
-            
-            .input-group {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-4xl mx-auto">
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">Flatmate Expense Manager</h1>
-            <p class="text-slate-300">Track shared expenses and settle up at the end of the month</p>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Flatmate Expense Manager</h1>
+            <p class="subtitle">Track shared expenses and settle up at the end of the month</p>
         </header>
         
         <main>
-            <!-- Settings Button -->
-            <div class="flex justify-end mb-4">
-                <button id="settingsBtn" class="text-slate-300 hover:text-white flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+            <!-- Settings & Import/Export Buttons -->
+            <div class="flex justify-end mb-4 gap-4">
+                <button id="importBtn" class="btn btn-secondary btn-sm btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                    </svg>
+                    Import CSV
+                </button>
+                <button id="exportBtn" class="btn btn-secondary btn-sm btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                    </svg>
+                    Export CSV
+                </button>
+                <button id="settingsBtn" class="btn btn-primary btn-sm btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
                     </svg>
                     Settings
                 </button>
             </div>
             
             <!-- Expense Form -->
-            <div class="card rounded-xl p-6 mb-8 shadow-lg">
-                <h2 class="text-xl font-semibold mb-4">Add New Expense</h2>
+            <div class="card">
+                <h2 class="card-title">Add New Expense</h2>
                 <form id="expenseForm" class="space-y-4">
-                    <div class="form-container flex flex-wrap gap-4">
-                        <div class="input-group flex-1">
-                            <label for="amount" class="block text-sm font-medium mb-1">Amount ($)</label>
-                            <input type="number" id="amount" step="0.01" min="0" class="input-field w-full px-4 py-2 rounded-lg" placeholder="0.00" required>
+                    <div class="form-container">
+                        <div class="input-group">
+                            <label for="amount" class="input-label">Amount ($)</label>
+                            <input type="number" id="amount" step="0.01" min="0" class="input-field" placeholder="0.00" required>
                         </div>
-                        
-                        <div class="input-group flex-1">
-                            <label class="block text-sm font-medium mb-1">Paid by</label>
-                            <div class="flex flex-wrap gap-2" id="payerOptions">
-                                <!-- Payer options will be added here dynamically -->
-                            </div>
+                        <div class="input-group">
+                            <label for="description" class="input-label">Description (optional)</label>
+                            <input type="text" id="description" class="input-field" placeholder="Groceries, Rent, etc.">
                         </div>
                     </div>
                     
-                    <div class="input-group">
-                        <label class="block text-sm font-medium mb-2">Split between:</label>
+                    <div class="space-y-2">
+                        <label class="input-label">Paid by</label>
+                        <div class="flex flex-wrap gap-2" id="payerOptions">
+                            <!-- Payer options will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="input-label">Split between</label>
                         <div class="flex flex-wrap gap-2" id="splitOptions">
                             <!-- Split options will be added here dynamically -->
                         </div>
                     </div>
                     
                     <div class="flex flex-wrap gap-3 pt-2">
-                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg font-medium glow">Add Expense</button>
-                        <button type="button" id="summaryBtn" class="btn-secondary px-6 py-2 rounded-lg font-medium">Show Summary</button>
-                        <button type="button" id="clearBtn" class="btn-danger px-6 py-2 rounded-lg font-medium">Clear All</button>
+                        <button type="submit" class="btn btn-primary glow">Add Expense</button>
+                        <button type="button" id="summaryBtn" class="btn btn-secondary">Show Summary</button>
+                        <button type="button" id="clearBtn" class="btn btn-danger">Clear All</button>
                     </div>
                 </form>
             </div>
             
             <!-- Expenses Table -->
-            <div class="card rounded-xl p-6 mb-8 shadow-lg">
-                <h2 class="text-xl font-semibold mb-4">Expense History</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
+            <div class="card">
+                <h2 class="card-title">Expense History</h2>
+                <div class="table-container">
+                    <table class="table">
                         <thead>
-                            <tr class="border-b border-slate-700">
-                                <th class="text-left py-3 px-4">Date</th>
-                                <th class="text-left py-3 px-4">Amount</th>
-                                <th class="text-left py-3 px-4">Paid by</th>
-                                <th class="text-left py-3 px-4">Split between</th>
-                                <th class="text-left py-3 px-4">Actions</th>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Paid By</th>
+                                <th>Split Between</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="expenseTable">
@@ -250,11 +102,11 @@
             </div>
             
             <!-- Summary Section -->
-            <div id="summarySection" class="card rounded-xl p-6 mb-8 shadow-lg hidden">
-                <h2 class="text-xl font-semibold mb-4">Monthly Summary</h2>
+            <div id="summarySection" class="card hidden">
+                <h2 class="card-title">Monthly Summary</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <h3 class="font-medium mb-3 text-blue-300">Totals</h3>
+                        <h3 class="summary-header summary-blue">Totals</h3>
                         <div class="space-y-2">
                             <div class="summary-item">
                                 <div class="flex justify-between">
@@ -272,14 +124,14 @@
                     </div>
                     
                     <div>
-                        <h3 class="font-medium mb-3 text-emerald-300">Individual Spending</h3>
+                        <h3 class="summary-header summary-green">Individual Spending</h3>
                         <div class="space-y-2" id="individualSpending">
                             <!-- Individual spending will be added here dynamically -->
                         </div>
                     </div>
                     
                     <div class="md:col-span-2">
-                        <h3 class="font-medium mb-3 text-amber-300">Settlements</h3>
+                        <h3 class="summary-header summary-amber">Settlements</h3>
                         <div id="settlements" class="space-y-2">
                             <!-- Settlement details will be added here -->
                         </div>
@@ -292,11 +144,11 @@
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">Settings</h3>
-                <button id="closeModal" class="text-slate-400 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <div class="modal-header">
+                <h3 class="modal-title">Settings</h3>
+                <button id="closeModal" class="close-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
                 </button>
             </div>
@@ -306,438 +158,35 @@
                     <h4 class="font-medium mb-2">Flatmate Names</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="input-group">
-                            <label for="person1Name" class="block text-sm mb-1">Person 1</label>
-                            <input type="text" id="person1Name" class="input-field w-full px-3 py-2 rounded">
+                            <label for="person1Name" class="input-label">Person 1</label>
+                            <input type="text" id="person1Name" class="input-field">
                         </div>
                         <div class="input-group">
-                            <label for="person2Name" class="block text-sm mb-1">Person 2</label>
-                            <input type="text" id="person2Name" class="input-field w-full px-3 py-2 rounded">
+                            <label for="person2Name" class="input-label">Person 2</label>
+                            <input type="text" id="person2Name" class="input-field">
                         </div>
                         <div class="input-group">
-                            <label for="person3Name" class="block text-sm mb-1">Person 3</label>
-                            <input type="text" id="person3Name" class="input-field w-full px-3 py-2 rounded">
+                            <label for="person3Name" class="input-label">Person 3</label>
+                            <input type="text" id="person3Name" class="input-field">
                         </div>
                         <div class="input-group">
-                            <label for="person4Name" class="block text-sm mb-1">Person 4</label>
-                            <input type="text" id="person4Name" class="input-field w-full px-3 py-2 rounded">
+                            <label for="person4Name" class="input-label">Person 4</label>
+                            <input type="text" id="person4Name" class="input-field">
                         </div>
                     </div>
                 </div>
                 
                 <div class="pt-4">
-                    <button id="saveSettings" class="btn-primary w-full py-2 rounded-lg font-medium">Save Settings</button>
+                    <button id="saveSettings" class="btn btn-primary w-full">Save Settings</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const expenseForm = document.getElementById('expenseForm');
-            const amountInput = document.getElementById('amount');
-            const expenseTable = document.getElementById('expenseTable');
-            const noExpenses = document.getElementById('noExpenses');
-            const summaryBtn = document.getElementById('summaryBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const summarySection = document.getElementById('summarySection');
-            const settingsBtn = document.getElementById('settingsBtn');
-            const settingsModal = document.getElementById('settingsModal');
-            const closeModal = document.getElementById('closeModal');
-            const saveSettings = document.getElementById('saveSettings');
-            const payerOptions = document.getElementById('payerOptions');
-            const splitOptions = document.getElementById('splitOptions');
-            const individualSpending = document.getElementById('individualSpending');
-            
-            // Initialize flatmates data from localStorage or default values
-            let flatmates = JSON.parse(localStorage.getItem('flatmateNames')) || [
-                { id: 1, name: "Person A", active: true },
-                { id: 2, name: "Person B", active: true },
-                { id: 3, name: "Person C", active: true },
-                { id: 4, name: "Person D", active: true }
-            ];
-            
-            // Initialize expenses array from localStorage or empty array
-            let expenses = JSON.parse(localStorage.getItem('flatmateExpenses')) || [];
-            
-            // Load settings into modal inputs
-            function loadSettings() {
-                document.getElementById('person1Name').value = flatmates[0].name;
-                document.getElementById('person2Name').value = flatmates[1].name;
-                document.getElementById('person3Name').value = flatmates[2].name;
-                document.getElementById('person4Name').value = flatmates[3].name;
-            }
-            
-            // Save settings from modal
-            function saveFlatmateNames() {
-                flatmates[0].name = document.getElementById('person1Name').value || "Person A";
-                flatmates[1].name = document.getElementById('person2Name').value || "Person B";
-                flatmates[2].name = document.getElementById('person3Name').value || "Person C";
-                flatmates[3].name = document.getElementById('person4Name').value || "Person D";
-                
-                localStorage.setItem('flatmateNames', JSON.stringify(flatmates));
-                renderPayerOptions();
-                renderSplitOptions();
-                renderExpenses();
-            }
-            
-            // Render payer options
-            function renderPayerOptions() {
-                payerOptions.innerHTML = '';
-                
-                flatmates.forEach((person, index) => {
-                    const radioId = `person${index + 1}`;
-                    
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.id = radioId;
-                    radio.name = 'payer';
-                    radio.value = person.name;
-                    radio.className = 'radio-option';
-                    if (index === 0) radio.checked = true;
-                    
-                    const label = document.createElement('label');
-                    label.htmlFor = radioId;
-                    label.className = 'radio-label';
-                    label.textContent = person.name;
-                    
-                    payerOptions.appendChild(radio);
-                    payerOptions.appendChild(label);
-                });
-            }
-            
-            // Render split options
-            function renderSplitOptions() {
-                splitOptions.innerHTML = '';
-                
-                flatmates.forEach((person, index) => {
-                    const checkboxId = `splitPerson${index + 1}`;
-                    
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = checkboxId;
-                    checkbox.name = 'split';
-                    checkbox.value = person.name;
-                    checkbox.className = 'checkbox-option';
-                    checkbox.checked = true;
-                    
-                    const label = document.createElement('label');
-                    label.htmlFor = checkboxId;
-                    label.className = 'checkbox-label';
-                    label.textContent = person.name;
-                    
-                    splitOptions.appendChild(checkbox);
-                    splitOptions.appendChild(label);
-                });
-            }
-            
-            // Render expenses table
-            function renderExpenses() {
-                expenseTable.innerHTML = '';
-                
-                if (expenses.length === 0) {
-                    noExpenses.classList.remove('hidden');
-                    return;
-                }
-                
-                noExpenses.classList.add('hidden');
-                
-                expenses.forEach((expense, index) => {
-                    const row = document.createElement('tr');
-                    row.className = 'table-row';
-                    
-                    const dateCell = document.createElement('td');
-                    dateCell.className = 'py-3 px-4';
-                    dateCell.textContent = new Date(expense.date).toLocaleDateString();
-                    
-                    const amountCell = document.createElement('td');
-                    amountCell.className = 'py-3 px-4';
-                    amountCell.textContent = `$${expense.amount.toFixed(2)}`;
-                    
-                    const payerCell = document.createElement('td');
-                    payerCell.className = 'py-3 px-4';
-                    payerCell.textContent = expense.payer;
-                    
-                    const splitCell = document.createElement('td');
-                    splitCell.className = 'py-3 px-4 text-sm';
-                    splitCell.textContent = expense.splitBetween.join(', ');
-                    
-                    const actionsCell = document.createElement('td');
-                    actionsCell.className = 'py-3 px-4';
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'text-red-400 hover:text-red-300 text-sm';
-                    deleteBtn.innerHTML = 'Delete';
-                    deleteBtn.addEventListener('click', () => deleteExpense(index));
-                    
-                    actionsCell.appendChild(deleteBtn);
-                    
-                    row.appendChild(dateCell);
-                    row.appendChild(amountCell);
-                    row.appendChild(payerCell);
-                    row.appendChild(splitCell);
-                    row.appendChild(actionsCell);
-                    
-                    expenseTable.appendChild(row);
-                });
-            }
-            
-            // Add new expense
-            expenseForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const amount = parseFloat(amountInput.value);
-                const payer = document.querySelector('input[name="payer"]:checked').value;
-                
-                // Get which flatmates to split between
-                const splitCheckboxes = document.querySelectorAll('input[name="split"]:checked');
-                const splitBetween = Array.from(splitCheckboxes).map(cb => cb.value);
-                
-                if (isNaN(amount) || amount <= 0) {
-                    alert('Please enter a valid amount');
-                    return;
-                }
-                
-                if (splitBetween.length === 0) {
-                    alert('Please select at least one person to split the expense with');
-                    return;
-                }
-                
-                const newExpense = {
-                    amount: amount,
-                    payer: payer,
-                    splitBetween: splitBetween,
-                    date: new Date().toISOString()
-                };
-                
-                expenses.push(newExpense);
-                saveExpenses();
-                renderExpenses();
-                
-                // Reset form
-                amountInput.value = '';
-                amountInput.focus();
-            });
-            
-            // Delete expense
-            function deleteExpense(index) {
-                if (confirm('Are you sure you want to delete this expense?')) {
-                    expenses.splice(index, 1);
-                    saveExpenses();
-                    renderExpenses();
-                    
-                    // Hide summary if visible
-                    summarySection.classList.add('hidden');
-                }
-            }
-            
-            // Show summary
-            summaryBtn.addEventListener('click', function() {
-                if (expenses.length === 0) {
-                    alert('No expenses to summarize');
-                    return;
-                }
-                
-                calculateSummary();
-                summarySection.classList.remove('hidden');
-            });
-            
-            // Calculate and display summary
-            function calculateSummary() {
-                // Calculate totals and participation counts
-                let totalExpenses = 0;
-                const participantCounts = {};
-                const participantTotals = {};
-                
-                // Initialize participant data
-                flatmates.forEach(person => {
-                    participantCounts[person.name] = 0;
-                    participantTotals[person.name] = 0;
-                });
-                
-                // Process each expense
-                expenses.forEach(expense => {
-                    totalExpenses += expense.amount;
-                    
-                    // Count how many times each person participated in expenses
-                    expense.splitBetween.forEach(person => {
-                        participantCounts[person] = (participantCounts[person] || 0) + 1;
-                    });
-                    
-                    // Add to payer's total
-                    participantTotals[expense.payer] += expense.amount;
-                });
-                
-                // Calculate total participants (unique people involved in expenses)
-                const totalParticipants = Object.values(participantCounts).filter(count => count > 0).length;
-                
-                // Calculate each person's share (total expenses divided by total participants)
-                const eachShare = totalParticipants > 0 ? totalExpenses / totalParticipants : 0;
-                
-                // Update summary display
-                document.getElementById('totalExpenses').textContent = `$${totalExpenses.toFixed(2)}`;
-                document.getElementById('totalParticipants').textContent = totalParticipants;
-                
-                // Render individual spending
-                individualSpending.innerHTML = '';
-                
-                flatmates.forEach(person => {
-                    const spent = participantTotals[person.name] || 0;
-                    const balance = spent - (participantCounts[person.name] > 0 ? eachShare : 0);
-                    
-                    const item = document.createElement('div');
-                    item.className = 'summary-item';
-                    
-                    const content = document.createElement('div');
-                    content.className = 'flex justify-between';
-                    
-                    const nameSpan = document.createElement('span');
-                    nameSpan.textContent = `${person.name} spent:`;
-                    
-                    const amountSpan = document.createElement('span');
-                    amountSpan.className = 'font-medium';
-                    amountSpan.textContent = `$${spent.toFixed(2)}`;
-                    
-                    content.appendChild(nameSpan);
-                    content.appendChild(amountSpan);
-                    item.appendChild(content);
-                    
-                    // Add balance info if they participated
-                    if (participantCounts[person.name] > 0) {
-                        const balanceDiv = document.createElement('div');
-                        balanceDiv.className = 'text-xs mt-1';
-                        
-                        if (balance > 0) {
-                            balanceDiv.textContent = `(Owes $${balance.toFixed(2)} to others)`;
-                            balanceDiv.className += ' text-red-300';
-                        } else if (balance < 0) {
-                            balanceDiv.textContent = `(Is owed $${Math.abs(balance).toFixed(2)})`;
-                            balanceDiv.className += ' text-green-300';
-                        } else {
-                            balanceDiv.textContent = '(Balanced)';
-                            balanceDiv.className += ' text-blue-300';
-                        }
-                        
-                        item.appendChild(balanceDiv);
-                    }
-                    
-                    individualSpending.appendChild(item);
-                });
-                
-                // Generate settlements
-                const settlementsContainer = document.getElementById('settlements');
-                settlementsContainer.innerHTML = '';
-                
-                if (totalParticipants === 0) {
-                    const noSettlements = document.createElement('div');
-                    noSettlements.className = 'text-center text-slate-400 py-2';
-                    noSettlements.textContent = 'No expenses to settle';
-                    settlementsContainer.appendChild(noSettlements);
-                    return;
-                }
-                
-                // Calculate balances for each person
-                const balances = flatmates.map(person => {
-                    const spent = participantTotals[person.name] || 0;
-                    const balance = spent - (participantCounts[person.name] > 0 ? eachShare : 0);
-                    return {
-                        name: person.name,
-                        balance: balance
-                    };
-                });
-                
-                // Sort by balance (positive first)
-                balances.sort((a, b) => b.balance - a.balance);
-                
-                // Generate settlement instructions
-                const creditors = balances.filter(p => p.balance > 0.01);
-                const debtors = balances.filter(p => p.balance < -0.01).map(p => ({ ...p, balance: Math.abs(p.balance) }));
-                
-                let i = 0, j = 0;
-                
-                while (i < creditors.length && j < debtors.length) {
-                    const creditor = creditors[i];
-                    const debtor = debtors[j];
-                    
-                    const amount = Math.min(creditor.balance, debtor.balance);
-                    
-                    if (amount > 0.01) { // Only show if amount is significant
-                        const settlementItem = document.createElement('div');
-                        settlementItem.className = 'summary-item';
-                        
-                        const settlementText = document.createElement('div');
-                        settlementText.className = 'flex justify-between';
-                        
-                        const fromText = document.createElement('span');
-                        fromText.textContent = `${debtor.name} → ${creditor.name}:`;
-                        
-                        const amountText = document.createElement('span');
-                        amountText.className = 'font-medium';
-                        amountText.textContent = `$${amount.toFixed(2)}`;
-                        
-                        settlementText.appendChild(fromText);
-                        settlementText.appendChild(amountText);
-                        settlementItem.appendChild(settlementText);
-                        settlementsContainer.appendChild(settlementItem);
-                    }
-                    
-                    creditor.balance -= amount;
-                    debtor.balance -= amount;
-                    
-                    if (creditor.balance < 0.01) i++;
-                    if (debtor.balance < 0.01) j++;
-                }
-                
-                if (settlementsContainer.children.length === 0) {
-                    const noSettlements = document.createElement('div');
-                    noSettlements.className = 'text-center text-slate-400 py-2';
-                    noSettlements.textContent = 'No settlements needed - everything is balanced!';
-                    settlementsContainer.appendChild(noSettlements);
-                }
-            }
-            
-            // Clear all expenses
-            clearBtn.addEventListener('click', function() {
-                if (expenses.length === 0 || confirm('Are you sure you want to delete ALL expenses?')) {
-                    expenses = [];
-                    saveExpenses();
-                    renderExpenses();
-                    summarySection.classList.add('hidden');
-                }
-            });
-            
-            // Save expenses to localStorage
-            function saveExpenses() {
-                localStorage.setItem('flatmateExpenses', JSON.stringify(expenses));
-            }
-            
-            // Modal controls
-            settingsBtn.addEventListener('click', function() {
-                loadSettings();
-                settingsModal.style.display = 'flex';
-            });
-            
-            closeModal.addEventListener('click', function() {
-                settingsModal.style.display = 'none';
-            });
-            
-            saveSettings.addEventListener('click', function() {
-                saveFlatmateNames();
-                settingsModal.style.display = 'none';
-            });
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', function(event) {
-                if (event.target === settingsModal) {
-                    settingsModal.style.display = 'none';
-                }
-            });
-            
-            // Initial render
-            renderPayerOptions();
-            renderSplitOptions();
-            renderExpenses();
-        });
-    </script>
+    
+    <!-- Hidden file input for CSV import -->
+    <input type="file" id="csvFileInput" accept=".csv" class="hidden">
+    
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
 </body>
 </html>
