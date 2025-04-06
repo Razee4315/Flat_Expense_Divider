@@ -1,69 +1,46 @@
-# Flatmate Expense Manager
+# 🏠 Flatmate Expense Manager
 
-A clean, modern web application to track and manage shared expenses between flatmates or roommates.
+A simple, modern app to split and track expenses with your flatmates.
 
-## Features
+## ✨ Features
 
-- **Add Expenses**: Easily record new expenses with amount, payer, and split details
-- **Track History**: View a complete history of all expenses
-- **Expense Summary**: Get a monthly summary showing who owes what
-- **Settlement Calculations**: Automatically calculate the optimal way to settle debts
-- **Customizable Names**: Set up to 4 flatmate names in the settings
-- **Persistent Storage**: All data is saved in your browser's local storage
-- **Responsive Design**: Works on desktop and mobile devices
+- 💸 Add who paid and how to split  
+- 🧾 See all past expenses  
+- 📊 Smart monthly summary  
+- 🔁 Auto-settlement suggestions  
+- 👤 Customize up to 4 names  
+- 💾 Data saved in your browser  
+- 📱 Works on desktop and mobile  
 
-## How It Works
+## ⚙️ How It Works
 
-1. **Add an Expense**: Enter the amount, select who paid, and who to split it with
-2. **View History**: All expenses are shown in a table with details
-3. **Generate Summary**: Click "Show Summary" to see totals and settlement instructions
-4. **Customize Names**: Click "Settings" to change the default flatmate names
+1. Add an expense (who paid + split info)  
+2. View all transactions  
+3. Hit "Show Summary" for who owes what  
+4. Change names anytime via Settings  
 
-## Technologies Used
+## 🛠 Built With
 
-- **HTML5/CSS3**: For structure and styling
-- **JavaScript**: For all application logic
-- **TailwindCSS**: For responsive design and UI components
-- **LocalStorage API**: For persistent data storage
+- HTML  
+- TailwindCSS  
+- JavaScript  
+- LocalStorage API  
 
-## Getting Started
+## 🚀 Getting Started
 
-Simply open the `index.html` file in any modern web browser to start using the application.
+Open `index.html` in your browser to start.
 
-### First-time Setup
+1. Go to Settings → Add flatmate names  
+2. Save and start adding expenses!  
 
-1. Click the "Settings" button in the top right
-2. Enter the names of your flatmates (up to 4)
-3. Click "Save Settings"
-4. Start adding expenses!
+## 🔐 Privacy
 
-## Usage Examples
+Everything stays in your browser. No server, no tracking.
 
-### Adding an Expense
+## 📄 License
 
-1. Enter the amount (e.g., $45.50)
-2. Select who paid for it
-3. Select who to split it with (can be different people)
-4. Click "Add Expense"
-
-### Viewing the Monthly Summary
-
-1. Add all expenses for the period
-2. Click "Show Summary"
-3. View the total expenses, individual spending, and settlement instructions
-
-## Privacy
-
-All data is stored locally in your browser. No information is sent to any server.
-
-## License
-
-MIT License
-
-## Author
-
-Created by Saqlain
+MIT
 
 ---
 
-Feel free to contribute to this project by submitting issues or pull requests!
+Made with ❤️ by Saqlain. Contributions welcome!
