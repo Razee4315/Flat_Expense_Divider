@@ -2,8 +2,6 @@
 
 A clean, modern web application to track and manage shared expenses between flatmates or roommates.
 
-![Flatmate Expense Manager](https://i.imgur.com/DjkZVLU.png)
-
 ## Features
 
 - **Add Expenses**: Easily record new expenses with amount, payer, and split details
