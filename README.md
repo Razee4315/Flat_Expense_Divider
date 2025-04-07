@@ -43,4 +43,5 @@ MIT
 
 ---
 
-Made with ❤️ by Saqlain. Contributions welcome!
+Made with ❤️ by Saqlain Abbas.
+Contributions welcome!
