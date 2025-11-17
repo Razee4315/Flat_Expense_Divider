@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const expenseTable = document.getElementById('expenseTable');
     const noExpenses = document.getElementById('noExpenses');
     const summaryBtn = document.getElementById('summaryBtn');
+    const closeSummary = document.getElementById('closeSummary');
     const clearBtn = document.getElementById('clearBtn');
     const summarySection = document.getElementById('summarySection');
     const settingsBtn = document.getElementById('settingsBtn');
@@ -18,32 +19,86 @@ document.addEventListener('DOMContentLoaded', function() {
     const importBtn = document.getElementById('importBtn');
     const exportBtn = document.getElementById('exportBtn');
     const fileInput = document.getElementById('csvFileInput');
+    const addPersonBtn = document.getElementById('addPersonBtn');
+    const flatmatesList = document.getElementById('flatmatesList');
     
     // Initialize flatmates data from localStorage or default values
     let flatmates = JSON.parse(localStorage.getItem('flatmateNames')) || [
-        { id: 1, name: "Person A", active: true },
-        { id: 2, name: "Person B", active: true },
-        { id: 3, name: "Person C", active: true },
-        { id: 4, name: "Person D", active: true }
+        { id: Date.now() + 1, name: "Ali", active: true },
+        { id: Date.now() + 2, name: "Saqlain", active: true },
+        { id: Date.now() + 3, name: "Waqar", active: true },
+        { id: Date.now() + 4, name: "Tatheer", active: true },
+        { id: Date.now() + 5, name: "Imran", active: true }
     ];
+    
+    let nextId = flatmates.length > 0 ? Math.max(...flatmates.map(f => f.id)) + 1 : 1;
     
     // Initialize expenses array from localStorage or empty array
     let expenses = JSON.parse(localStorage.getItem('flatmateExpenses')) || [];
     
-    // Load settings into modal inputs
-    function loadSettings() {
-        document.getElementById('person1Name').value = flatmates[0].name;
-        document.getElementById('person2Name').value = flatmates[1].name;
-        document.getElementById('person3Name').value = flatmates[2].name;
-        document.getElementById('person4Name').value = flatmates[3].name;
+    // Render flatmates list in settings modal
+    function renderFlatmatesList() {
+        flatmatesList.innerHTML = '';
+        
+        flatmates.forEach((person, index) => {
+            const item = document.createElement('div');
+            item.className = 'flatmate-item';
+            item.innerHTML = `
+                <div class="flatmate-number">${index + 1}</div>
+                <input type="text" 
+                       class="input-field flatmate-input" 
+                       value="${person.name}" 
+                       placeholder="Enter name"
+                       data-id="${person.id}">
+                <button class="btn btn-danger btn-icon-only" 
+                        onclick="removePerson(${person.id})"
+                        ${flatmates.length <= 2 ? 'disabled title="Minimum 2 people required"' : ''}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                </button>
+            `;
+            flatmatesList.appendChild(item);
+        });
     }
+    
+    // Add new person
+    addPersonBtn.addEventListener('click', function() {
+        const newPerson = {
+            id: nextId++,
+            name: `Person ${flatmates.length + 1}`,
+            active: true
+        };
+        flatmates.push(newPerson);
+        renderFlatmatesList();
+    });
+    
+    // Remove person (global function for inline onclick)
+    window.removePerson = function(id) {
+        if (flatmates.length <= 2) {
+            alert('You must have at least 2 flatmates!');
+            return;
+        }
+        
+        const person = flatmates.find(f => f.id === id);
+        if (confirm(`Remove ${person.name} from the list?`)) {
+            flatmates = flatmates.filter(f => f.id !== id);
+            renderFlatmatesList();
+        }
+    };
     
     // Save settings from modal
     function saveFlatmateNames() {
-        flatmates[0].name = document.getElementById('person1Name').value || "Person A";
-        flatmates[1].name = document.getElementById('person2Name').value || "Person B";
-        flatmates[2].name = document.getElementById('person3Name').value || "Person C";
-        flatmates[3].name = document.getElementById('person4Name').value || "Person D";
+        // Update names from input fields
+        const inputs = document.querySelectorAll('.flatmate-input');
+        inputs.forEach(input => {
+            const id = parseInt(input.dataset.id);
+            const person = flatmates.find(f => f.id === id);
+            if (person) {
+                person.name = input.value.trim() || `Person ${flatmates.indexOf(person) + 1}`;
+            }
+        });
         
         localStorage.setItem('flatmateNames', JSON.stringify(flatmates));
         renderPayerOptions();
@@ -116,35 +171,58 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
             row.className = 'table-row';
             
+            // Date cell
             const dateCell = document.createElement('td');
-            dateCell.className = 'py-3 px-4';
-            dateCell.textContent = new Date(expense.date).toLocaleDateString();
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'expense-date';
+            dateSpan.textContent = new Date(expense.date).toLocaleDateString();
+            dateCell.appendChild(dateSpan);
             
+            // Description cell
             const descriptionCell = document.createElement('td');
-            descriptionCell.className = 'py-3 px-4';
-            descriptionCell.textContent = expense.description || '-';
+            const descSpan = document.createElement('span');
+            descSpan.className = 'expense-description';
+            descSpan.textContent = expense.description || '-';
+            descriptionCell.appendChild(descSpan);
             
+            // Amount cell
             const amountCell = document.createElement('td');
-            amountCell.className = 'py-3 px-4';
-            amountCell.textContent = `$${expense.amount.toFixed(2)}`;
+            const amountSpan = document.createElement('span');
+            amountSpan.className = 'expense-amount';
+            amountSpan.textContent = `Rs ${expense.amount.toFixed(2)}`;
+            amountCell.appendChild(amountSpan);
             
+            // Payer cell
             const payerCell = document.createElement('td');
-            payerCell.className = 'py-3 px-4';
-            payerCell.textContent = expense.payer;
+            const payerBadge = document.createElement('span');
+            payerBadge.className = 'expense-person';
+            payerBadge.textContent = expense.payer;
+            payerCell.appendChild(payerBadge);
             
+            // Split between cell
             const splitCell = document.createElement('td');
-            splitCell.className = 'py-3 px-4 text-sm';
-            splitCell.textContent = expense.splitBetween.join(', ');
+            const splitContainer = document.createElement('div');
+            splitContainer.className = 'expense-split';
+            expense.splitBetween.forEach(person => {
+                const personBadge = document.createElement('span');
+                personBadge.className = 'expense-split-person';
+                personBadge.textContent = person;
+                splitContainer.appendChild(personBadge);
+            });
+            splitCell.appendChild(splitContainer);
             
+            // Actions cell
             const actionsCell = document.createElement('td');
-            actionsCell.className = 'py-3 px-4';
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'expense-actions';
             
             const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'text-red-400 hover:text-red-300 text-sm';
-            deleteBtn.innerHTML = 'Delete';
+            deleteBtn.className = 'btn-delete';
+            deleteBtn.textContent = 'Delete';
             deleteBtn.addEventListener('click', () => deleteExpense(index));
             
-            actionsCell.appendChild(deleteBtn);
+            actionsDiv.appendChild(deleteBtn);
+            actionsCell.appendChild(actionsDiv);
             
             row.appendChild(dateCell);
             row.appendChild(descriptionCell);
@@ -223,6 +301,13 @@ document.addEventListener('DOMContentLoaded', function() {
         summarySection.scrollIntoView({ behavior: 'smooth' });
     });
     
+    // Close summary
+    closeSummary.addEventListener('click', function() {
+        summarySection.classList.add('hidden');
+        // Scroll back to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
     // Calculate and display summary
     function calculateSummary() {
         // Calculate totals and participation counts
@@ -261,10 +346,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalParticipants = involvedParticipants.size;
         
         // Update summary display
-        document.getElementById('totalExpenses').textContent = `$${totalExpenses.toFixed(2)}`;
+        document.getElementById('totalExpenses').textContent = `Rs ${totalExpenses.toFixed(2)}`;
         document.getElementById('totalParticipants').textContent = totalParticipants;
         
-        // Render individual spending
+        // Render individual spending with separate boxes
         individualSpending.innerHTML = '';
         
         flatmates.forEach(person => {
@@ -276,46 +361,56 @@ document.addEventListener('DOMContentLoaded', function() {
             // Skip if person wasn't involved in any expenses
             if (spent === 0 && shouldPay === 0) return;
             
-            const item = document.createElement('div');
-            item.className = 'summary-item';
+            // Create person box
+            const personBox = document.createElement('div');
+            personBox.className = 'person-spending-box';
             
-            const content = document.createElement('div');
-            content.className = 'flex justify-between';
+            // Person name header
+            const nameHeader = document.createElement('div');
+            nameHeader.className = 'person-name-header';
+            nameHeader.textContent = name;
+            personBox.appendChild(nameHeader);
             
-            const nameSpan = document.createElement('span');
-            nameSpan.textContent = `${name} spent:`;
+            // Spent row
+            const spentRow = document.createElement('div');
+            spentRow.className = 'spending-row';
+            spentRow.innerHTML = `
+                <span class="spending-label">Total Spent:</span>
+                <span class="spending-value">Rs ${spent.toFixed(2)}</span>
+            `;
+            personBox.appendChild(spentRow);
             
-            const amountSpan = document.createElement('span');
-            amountSpan.className = 'font-medium';
-            amountSpan.textContent = `$${spent.toFixed(2)}`;
+            // Should pay row
+            const shouldPayRow = document.createElement('div');
+            shouldPayRow.className = 'spending-row';
+            shouldPayRow.innerHTML = `
+                <span class="spending-label">Should Pay:</span>
+                <span class="spending-value">Rs ${shouldPay.toFixed(2)}</span>
+            `;
+            personBox.appendChild(shouldPayRow);
             
-            content.appendChild(nameSpan);
-            content.appendChild(amountSpan);
-            item.appendChild(content);
+            // Balance section
+            const balanceSection = document.createElement('div');
+            balanceSection.className = 'balance-section';
             
-            // Add share info
-            const shareDiv = document.createElement('div');
-            shareDiv.className = 'text-xs mt-1';
-            shareDiv.textContent = `Should pay: $${shouldPay.toFixed(2)}`;
-            item.appendChild(shareDiv);
-            
-            // Add balance info
-            const balanceDiv = document.createElement('div');
-            balanceDiv.className = 'text-xs mt-1';
+            const balanceText = document.createElement('div');
+            balanceText.className = 'balance-text';
             
             if (balance > 0.01) {
-                balanceDiv.textContent = `Is owed $${balance.toFixed(2)} by others`;
-                balanceDiv.className += ' text-green-300';
+                balanceText.textContent = `Is owed Rs ${balance.toFixed(2)} by others`;
+                balanceText.className += ' balance-positive';
             } else if (balance < -0.01) {
-                balanceDiv.textContent = `Owes $${Math.abs(balance).toFixed(2)} to others`;
-                balanceDiv.className += ' text-red-300';
+                balanceText.textContent = `Owes Rs ${Math.abs(balance).toFixed(2)} to others`;
+                balanceText.className += ' balance-negative';
             } else {
-                balanceDiv.textContent = 'Balanced (no payments needed)';
-                balanceDiv.className += ' text-blue-300';
+                balanceText.textContent = 'Balanced ✓';
+                balanceText.className += ' balance-neutral';
             }
             
-            item.appendChild(balanceDiv);
-            individualSpending.appendChild(item);
+            balanceSection.appendChild(balanceText);
+            personBox.appendChild(balanceSection);
+            
+            individualSpending.appendChild(personBox);
         });
         
         // Generate settlements
@@ -374,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const amountText = document.createElement('span');
                 amountText.className = 'font-medium';
-                amountText.textContent = `$${amount.toFixed(2)}`;
+                amountText.textContent = `Rs ${amount.toFixed(2)}`;
                 
                 settlementText.appendChild(fromText);
                 settlementText.appendChild(amountText);
@@ -414,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Modal controls
     settingsBtn.addEventListener('click', function() {
-        loadSettings();
+        renderFlatmatesList();
         settingsModal.style.display = 'flex';
     });
     
