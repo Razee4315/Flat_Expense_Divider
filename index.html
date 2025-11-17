@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flatmate Expense Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
         <header class="header">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏠💰</div>
             <h1 class="title">Flatmate Expense Manager</h1>
             <p class="subtitle">Track shared expenses and settle up at the end of the month</p>
         </header>
@@ -47,7 +47,7 @@
                 <form id="expenseForm" class="space-y-4">
                     <div class="form-container">
                         <div class="input-group">
-                            <label for="amount" class="input-label">Amount ($)</label>
+                            <label for="amount" class="input-label">Amount (Rs)</label>
                             <input type="number" id="amount" step="0.01" min="0" class="input-field" placeholder="0.00" required>
                         </div>
                         <div class="input-group">
@@ -71,8 +71,7 @@
                     </div>
                     
                     <div class="flex flex-wrap gap-3 pt-2">
-                        <button type="submit" class="btn btn-primary glow">Add Expense</button>
-                        <button type="button" id="summaryBtn" class="btn btn-secondary">Show Summary</button>
+                        <button type="submit" class="btn btn-primary">Add Expense</button>
                         <button type="button" id="clearBtn" class="btn btn-danger">Clear All</button>
                     </div>
                 </form>
@@ -80,7 +79,10 @@
             
             <!-- Expenses Table -->
             <div class="card">
-                <h2 class="card-title">Expense History</h2>
+                <div class="card-header-with-button">
+                    <h2 class="card-title">Expense History</h2>
+                    <button type="button" id="summaryBtn" class="btn btn-secondary btn-sm">View Summary</button>
+                </div>
                 <div class="table-container">
                     <table class="table">
                         <thead>
@@ -101,40 +103,41 @@
                 </div>
             </div>
             
-            <!-- Summary Section -->
-            <div id="summarySection" class="card hidden">
-                <h2 class="card-title">Monthly Summary</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 class="summary-header summary-blue">Totals</h3>
-                        <div class="space-y-2">
-                            <div class="summary-item">
-                                <div class="flex justify-between">
-                                    <span>Total Expenses:</span>
-                                    <span id="totalExpenses" class="font-medium">$0.00</span>
-                                </div>
-                            </div>
-                            <div class="summary-item">
-                                <div class="flex justify-between">
-                                    <span>Total Participants:</span>
-                                    <span id="totalParticipants" class="font-medium">0</span>
-                                </div>
-                            </div>
+            <!-- Summary Section - Separate Area -->
+            <div id="summarySection" class="hidden">
+                <div class="summary-divider">
+                    <h2 class="summary-main-title">📊 Monthly Summary & Settlements</h2>
+                    <button type="button" id="closeSummary" class="btn btn-secondary btn-sm">Hide Summary</button>
+                </div>
+                
+                <!-- Totals Card -->
+                <div class="card summary-card">
+                    <h3 class="section-title">💰 Total Overview</h3>
+                    <div class="summary-grid">
+                        <div class="summary-stat-box">
+                            <span class="stat-label">Total Expenses</span>
+                            <span id="totalExpenses" class="stat-value">Rs 0.00</span>
+                        </div>
+                        <div class="summary-stat-box">
+                            <span class="stat-label">Participants</span>
+                            <span id="totalParticipants" class="stat-value">0</span>
                         </div>
                     </div>
-                    
-                    <div>
-                        <h3 class="summary-header summary-green">Individual Spending</h3>
-                        <div class="space-y-2" id="individualSpending">
-                            <!-- Individual spending will be added here dynamically -->
-                        </div>
+                </div>
+                
+                <!-- Individual Spending Card -->
+                <div class="card summary-card">
+                    <h3 class="section-title">👥 Individual Spending</h3>
+                    <div class="space-y-2" id="individualSpending">
+                        <!-- Individual spending will be added here dynamically -->
                     </div>
-                    
-                    <div class="md:col-span-2">
-                        <h3 class="summary-header summary-amber">Settlements</h3>
-                        <div id="settlements" class="space-y-2">
-                            <!-- Settlement details will be added here -->
-                        </div>
+                </div>
+                
+                <!-- Settlements Card -->
+                <div class="card summary-card">
+                    <h3 class="section-title">💸 Who Owes Whom</h3>
+                    <div id="settlements" class="space-y-2">
+                        <!-- Settlement details will be added here -->
                     </div>
                 </div>
             </div>
@@ -143,9 +146,9 @@
     
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-large">
             <div class="modal-header">
-                <h3 class="modal-title">Settings</h3>
+                <h3 class="modal-title">⚙️ Manage Flatmates</h3>
                 <button id="closeModal" class="close-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -155,29 +158,22 @@
             
             <div class="space-y-4">
                 <div>
-                    <h4 class="font-medium mb-2">Flatmate Names</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="input-group">
-                            <label for="person1Name" class="input-label">Person 1</label>
-                            <input type="text" id="person1Name" class="input-field">
-                        </div>
-                        <div class="input-group">
-                            <label for="person2Name" class="input-label">Person 2</label>
-                            <input type="text" id="person2Name" class="input-field">
-                        </div>
-                        <div class="input-group">
-                            <label for="person3Name" class="input-label">Person 3</label>
-                            <input type="text" id="person3Name" class="input-field">
-                        </div>
-                        <div class="input-group">
-                            <label for="person4Name" class="input-label">Person 4</label>
-                            <input type="text" id="person4Name" class="input-field">
-                        </div>
+                    <div class="settings-header">
+                        <h4 class="font-medium">Flatmates List</h4>
+                        <button id="addPersonBtn" class="btn btn-secondary btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 0.25rem;">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                            Add Person
+                        </button>
+                    </div>
+                    <div id="flatmatesList" class="flatmates-list">
+                        <!-- Dynamically populated -->
                     </div>
                 </div>
                 
-                <div class="pt-4">
-                    <button id="saveSettings" class="btn btn-primary w-full">Save Settings</button>
+                <div class="modal-footer">
+                    <button id="saveSettings" class="btn btn-primary w-full">Save Changes</button>
                 </div>
             </div>
         </div>
