@@ -160,6 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderExpenses() {
         expenseTable.innerHTML = '';
         
+        // Always update summary stats when rendering
+        calculateSummary();
+        
         if (expenses.length === 0) {
             noExpenses.classList.remove('hidden');
             return;
@@ -289,11 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show summary
     summaryBtn.addEventListener('click', function() {
-        if (expenses.length === 0) {
-            alert('No expenses to summarize');
-            return;
-        }
-        
         calculateSummary();
         summarySection.classList.remove('hidden');
         
@@ -403,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 balanceText.textContent = `Owes Rs ${Math.abs(balance).toFixed(2)} to others`;
                 balanceText.className += ' balance-negative';
             } else {
-                balanceText.textContent = 'Balanced ✓';
+                balanceText.textContent = 'Balanced';
                 balanceText.className += ' balance-neutral';
             }
             

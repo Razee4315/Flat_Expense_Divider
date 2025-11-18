@@ -3,186 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flatmate Expense Manager</title>
+    <title>FlatFair | Expense Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: 'var(--primary)',
+                        secondary: 'var(--secondary)',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏠💰</div>
-            <h1 class="title">Flatmate Expense Manager</h1>
-            <p class="subtitle">Track shared expenses and settle up at the end of the month</p>
-        </header>
-        
-        <main>
-            <!-- Settings & Import/Export Buttons -->
-            <div class="flex justify-end mb-4 gap-4">
-                <button id="importBtn" class="btn btn-secondary btn-sm btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+<body class="bg-[var(--bg-body)] text-[var(--text-main)] min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden transition-colors duration-300">
+    
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 gap-6 border-b border-[var(--border-color)] pb-6 transition-colors duration-300">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-[var(--primary)] rounded-lg flex items-center justify-center shadow-md transition-colors duration-300">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
-                    Import CSV
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">FlatFair</h1>
+                    <p class="text-[var(--text-muted)] text-sm">Expense Management Dashboard</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button id="themeToggleBtn" class="p-2 rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-all hover:shadow-sm" title="Toggle Dark Mode">
+                    <!-- Sun Icon -->
+                    <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
                 </button>
-                <button id="exportBtn" class="btn btn-secondary btn-sm btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
-                    Export CSV
+                
+                <div class="h-6 w-px bg-[var(--border-color)] mx-1"></div>
+
+                <button id="importBtn" class="btn btn-secondary hover:shadow-sm text-sm">
+                    <svg class="w-4 h-4 mr-2 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Import
                 </button>
-                <button id="settingsBtn" class="btn btn-primary btn-sm btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
-                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
-                    </svg>
+                <button id="exportBtn" class="btn btn-secondary hover:shadow-sm text-sm">
+                    <svg class="w-4 h-4 mr-2 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    Export
+                </button>
+                <button id="settingsBtn" class="btn bg-[var(--text-main)] text-[var(--bg-card)] hover:opacity-90 shadow-sm text-sm">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Settings
                 </button>
             </div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Expense Form -->
-            <div class="card">
-                <h2 class="card-title">Add New Expense</h2>
-                <form id="expenseForm" class="space-y-4">
-                    <div class="form-container">
-                        <div class="input-group">
-                            <label for="amount" class="input-label">Amount (Rs)</label>
-                            <input type="number" id="amount" step="0.01" min="0" class="input-field" placeholder="0.00" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="description" class="input-label">Description (optional)</label>
-                            <input type="text" id="description" class="input-field" placeholder="Groceries, Rent, etc.">
-                        </div>
-                    </div>
+            <!-- Left Column: Input Form -->
+            <div class="lg:col-span-4 lg:sticky lg:top-8 h-fit space-y-6">
+                <div class="pro-card p-6">
+                    <h2 class="text-lg font-semibold mb-5 flex items-center gap-2 pb-4 border-b border-[var(--border-color)]">
+                        <span class="bg-[var(--hover-bg)] text-[var(--primary)] p-1.5 rounded-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </span>
+                        Add New Expense
+                    </h2>
                     
-                    <div class="space-y-2">
-                        <label class="input-label">Paid by</label>
-                        <div class="flex flex-wrap gap-2" id="payerOptions">
-                            <!-- Payer options will be added here dynamically -->
+                    <form id="expenseForm" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Amount</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] font-semibold text-sm">Rs</span>
+                                <input type="number" id="amount" step="0.01" min="0" placeholder="0.00" required
+                                    class="input-field pl-9">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="space-y-2">
-                        <label class="input-label">Split between</label>
-                        <div class="flex flex-wrap gap-2" id="splitOptions">
-                            <!-- Split options will be added here dynamically -->
+
+                        <div>
+                            <label class="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Description</label>
+                            <input type="text" id="description" placeholder="e.g. Weekly Groceries"
+                                class="input-field">
                         </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-3 pt-2">
-                        <button type="submit" class="btn btn-primary">Add Expense</button>
-                        <button type="button" id="clearBtn" class="btn btn-danger">Clear All</button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Expenses Table -->
-            <div class="card">
-                <div class="card-header-with-button">
-                    <h2 class="card-title">Expense History</h2>
-                    <button type="button" id="summaryBtn" class="btn btn-secondary btn-sm">View Summary</button>
-                </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                <th>Paid By</th>
-                                <th>Split Between</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="expenseTable">
-                            <!-- Expenses will be added here dynamically -->
-                        </tbody>
-                    </table>
-                    <p id="noExpenses" class="text-center py-4 text-slate-400">No expenses added yet</p>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-[var(--text-muted)]">Paid by</label>
+                            <div id="payerOptions" class="flex flex-wrap gap-2">
+                                <!-- Dynamic Payer Options -->
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-[var(--text-muted)]">Split between</label>
+                            <div id="splitOptions" class="grid grid-cols-2 gap-2">
+                                <!-- Dynamic Split Options -->
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button type="submit" class="flex-1 btn btn-primary shadow-md shadow-blue-200/50 dark:shadow-none">
+                                Add Expense
+                            </button>
+                            <button type="button" id="clearBtn" class="btn px-3 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Clear All Expenses">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            
-            <!-- Summary Section - Separate Area -->
-            <div id="summarySection" class="hidden">
-                <div class="summary-divider">
-                    <h2 class="summary-main-title">📊 Monthly Summary & Settlements</h2>
-                    <button type="button" id="closeSummary" class="btn btn-secondary btn-sm">Hide Summary</button>
-                </div>
+
+            <!-- Right Column: Stats & History -->
+            <div class="lg:col-span-8 space-y-6">
                 
-                <!-- Totals Card -->
-                <div class="card summary-card">
-                    <h3 class="section-title">💰 Total Overview</h3>
-                    <div class="summary-grid">
-                        <div class="summary-stat-box">
-                            <span class="stat-label">Total Expenses</span>
-                            <span id="totalExpenses" class="stat-value">Rs 0.00</span>
+                <!-- Summary Stats -->
+                <div id="statsContainer" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Total Expenses Card -->
+                        <div class="pro-card p-5 border-l-4 border-l-[var(--primary)]">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-[var(--text-muted)] mb-1">Total Expenses</p>
+                                    <h3 id="totalExpenses" class="text-2xl font-bold">Rs 0.00</h3>
+                                </div>
+                                <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                    <svg class="w-5 h-5 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                            </div>
                         </div>
-                        <div class="summary-stat-box">
-                            <span class="stat-label">Participants</span>
-                            <span id="totalParticipants" class="stat-value">0</span>
+                        
+                        <!-- Active Members Card -->
+                        <div class="pro-card p-5 border-l-4 border-l-[var(--secondary)]">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-[var(--text-muted)] mb-1">Active Members</p>
+                                    <h3 id="totalParticipants" class="text-2xl font-bold">0</h3>
+                                </div>
+                                <div class="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                                    <svg class="w-5 h-5 text-[var(--secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View Settlements Button Card -->
+                        <div class="pro-card p-5 flex items-center justify-center cursor-pointer hover:bg-[var(--hover-bg)] transition-colors group" id="toggleSettlementsBtn">
+                            <div class="text-center">
+                                <div class="w-10 h-10 bg-[var(--bg-body)] rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-[var(--bg-card)] group-hover:shadow-sm transition-all border border-[var(--border-color)]">
+                                    <svg class="w-5 h-5 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                </div>
+                                <span class="text-[var(--primary)] font-medium text-sm">View Settlements</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Summary (Toggled) -->
+                    <div id="summarySection" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden animate-fade-in">
+                        <div class="pro-card p-6">
+                            <h3 class="text-base font-semibold mb-4 border-b border-[var(--border-color)] pb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                Individual Spending
+                            </h3>
+                            <div id="individualSpending" class="space-y-3">
+                                <!-- Dynamic Content -->
+                            </div>
+                        </div>
+
+                        <div class="pro-card p-6">
+                            <h3 class="text-base font-semibold mb-4 border-b border-[var(--border-color)] pb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                Settlement Plan
+                            </h3>
+                            <div id="settlements" class="space-y-3">
+                                <!-- Dynamic Content -->
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Individual Spending Card -->
-                <div class="card summary-card">
-                    <h3 class="section-title">👥 Individual Spending</h3>
-                    <div class="space-y-2" id="individualSpending">
-                        <!-- Individual spending will be added here dynamically -->
+
+                <!-- Recent Activity / Table -->
+                <div class="pro-card overflow-hidden">
+                    <div class="p-6 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-card)]">
+                        <h2 class="text-lg font-semibold">Recent Expenses</h2>
+                        <button id="summaryBtn" class="hidden"></button>
+                        <button id="closeSummary" class="hidden"></button>
                     </div>
-                </div>
-                
-                <!-- Settlements Card -->
-                <div class="card summary-card">
-                    <h3 class="section-title">💸 Who Owes Whom</h3>
-                    <div id="settlements" class="space-y-2">
-                        <!-- Settlement details will be added here -->
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-[var(--text-muted)] text-xs font-semibold uppercase tracking-wider bg-[var(--bg-body)] border-b border-[var(--border-color)]">
+                                    <th class="p-4">Date</th>
+                                    <th class="p-4">Description</th>
+                                    <th class="p-4">Payer</th>
+                                    <th class="p-4">Amount</th>
+                                    <th class="p-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenseTable" class="text-sm text-[var(--text-muted)] divide-y divide-[var(--border-color)]">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="noExpenses" class="p-12 text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--bg-body)] mb-4 border border-[var(--border-color)]">
+                            <svg class="w-8 h-8 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <p class="text-[var(--text-muted)] font-medium">No expenses recorded yet</p>
+                        <p class="text-[var(--text-muted)] text-sm mt-1 opacity-70">Add an expense to get started</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    
+
     <!-- Settings Modal -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h3 class="modal-title">⚙️ Manage Flatmates</h3>
-                <button id="closeModal" class="close-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-opacity">
+        <div class="bg-[var(--bg-card)] w-full max-w-md rounded-xl shadow-2xl m-4 transform transition-all scale-100 overflow-hidden border border-[var(--border-color)]">
+            <div class="px-6 py-4 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-body)]">
+                <h3 class="text-lg font-bold">Manage Flatmates</h3>
+                <button id="closeModal" class="text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors p-1 rounded-md hover:bg-[var(--hover-bg)]">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
-            <div class="space-y-4">
+            <div class="p-6 space-y-6">
                 <div>
-                    <div class="settings-header">
-                        <h4 class="font-medium">Flatmates List</h4>
-                        <button id="addPersonBtn" class="btn btn-secondary btn-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 0.25rem;">
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                            Add Person
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-medium text-[var(--text-muted)]">Members List</span>
+                        <button id="addPersonBtn" class="text-xs bg-blue-50 dark:bg-blue-900/20 text-[var(--primary)] hover:bg-[var(--hover-bg)] font-medium px-3 py-1.5 rounded-md transition-colors border border-blue-200 dark:border-blue-800/30">
+                            + Add New
                         </button>
                     </div>
-                    <div id="flatmatesList" class="flatmates-list">
-                        <!-- Dynamically populated -->
+                    
+                    <div id="flatmatesList" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
+                        <!-- Dynamic List -->
                     </div>
                 </div>
                 
-                <div class="modal-footer">
-                    <button id="saveSettings" class="btn btn-primary w-full">Save Changes</button>
-                </div>
+                <button id="saveSettings" class="w-full btn btn-primary shadow-lg shadow-blue-200/50 dark:shadow-none">
+                    Save Changes
+                </button>
             </div>
         </div>
     </div>
-    
-    <!-- Hidden file input for CSV import -->
+
     <input type="file" id="csvFileInput" accept=".csv" class="hidden">
-    
-    <!-- Scripts -->
     <script src="js/app.js"></script>
+    
+    <script>
+        // UI Toggle Logic
+        document.getElementById('toggleSettlementsBtn')?.addEventListener('click', function() {
+            const details = document.getElementById('summarySection');
+            if(details.classList.contains('hidden')) {
+                // Trigger app.js logic
+                document.getElementById('summaryBtn').click();
+            } else {
+                details.classList.add('hidden');
+            }
+        });
+
+        // Dark Mode Toggle Logic
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        
+        // Check local storage
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            moonIcon.classList.add('hidden');
+            sunIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            } else {
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
